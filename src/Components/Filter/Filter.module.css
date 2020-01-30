@@ -1,0 +1,8 @@
+.Filter{
+    /*display: flex;*/
+    /*align-items: center;*/
+}
+.Filter .form-group{
+    display: flex;
+
+}
