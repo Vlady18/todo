@@ -14,7 +14,6 @@ const Filter = () =>{
                        className="form-control"
                        placeholder="Type to search"/>
             </div>
-
         </div>
     )
 }
