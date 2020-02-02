@@ -1,6 +1,26 @@
-.ListItemWrap{
+.ListItem{
     margin: 0;
     padding: 0;
     list-style: none;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    margin-bottom: 5px;
 }
+.ListItem span{
+    cursor: pointer;
+}
+.ListItem span.done{
+    text-decoration: line-through;
+}
+.ListItem span.important{
+    font-weight: bold;
+    font-style: italic;
+}
+.ListItem button{
+    text-align: center;
+    width: 40px;
+}
+

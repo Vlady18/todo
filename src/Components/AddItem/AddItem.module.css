@@ -1,0 +1,8 @@
+.AddItem{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.AddItem input{
+    margin-right: 5px;
+}
