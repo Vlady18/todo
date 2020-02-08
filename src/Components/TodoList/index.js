@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import classes from './TodoList.module.css'
 import ListItem from "../ListItem";
+import {FirebaseContext} from "../../context/firebaseContext";
 const TodoList = ({todoDate, doneToggle, importantToggle, removeItem}) =>{
+
     return(
         <ul className={classes.TodoList + ' list-group'}>
         {todoDate.map((el)=>{
