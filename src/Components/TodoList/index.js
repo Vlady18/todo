@@ -6,19 +6,20 @@ const TodoList = ({todoDate, doneToggle, importantToggle, removeItem}) =>{
 
     return(
         <ul className={classes.TodoList + ' list-group'}>
-        {todoDate.map((el)=>{
+        {todoDate ? todoDate.map((el)=>{
                 return(
                     <ListItem
-                        key={el.id}
+                        key={el.key}
                         label={el.label}
                         important={el.important}
                         done={el.done}
-                        doneToggle={() => doneToggle(el.id)}
-                        importantToggle={()=> importantToggle(el.id)}
-                        removeItem={() => removeItem(el.id)}
+                        doneToggle={() => doneToggle(el.key)}
+                        importantToggle={()=> importantToggle(el.key)}
+                        removeItem={() => removeItem(el.key)}
                     />
                 )
-            })}
+            })
+            : null}
         </ul>
     )
 }

@@ -12,7 +12,7 @@ const Filter = ({quickSearch, quickSearchText, filterButtons, changeFilterButton
                             <button
                                 type="button"
                                 key={el.label}
-                                onClick={()=> changeFilterButton(el.label)}
+                                // onClick={()=> changeFilterButton(el.label)}
                                 className={`btn ${className ? 'btn-primary' : 'btn-light'}`}>
                                 {el.label}
                             </button>

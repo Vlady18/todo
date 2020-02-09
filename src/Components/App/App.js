@@ -6,7 +6,7 @@ import TodoList from "../TodoList";
 import AddItem from "../AddItem";
 import {FirebaseContext} from "../../context/firebaseContext";
 const App = () => {
-    const { todoDate, fetchNotes, removedNote } = useContext(FirebaseContext);
+    const { todoDate, fetchNotes, removedNote, changeProperty } = useContext(FirebaseContext);
     useEffect(()=>{
         fetchNotes();
         // eslint-disable-next-line
@@ -37,26 +37,14 @@ const App = () => {
         useQuickSearchText(e.target.value);
     };
     const quickSearchVisible = (arr, quickSearchText)=>{
+        // debugger
         const newArr = arr.filter((el)=> el.label.toLowerCase().indexOf(quickSearchText.toLowerCase()) !== -1);
         if(quickSearchText === ''){
             return arr
         }
         return newArr
     };
-    const propertyToggle = (id, prop) =>{
-        this.setState(({todoDate})=>{
-            const idx = todoDate.findIndex(el => el.id === id);
-            const oldItem = todoDate[idx];
-            const newItem = {...oldItem, [prop]: !oldItem[prop]};
-            return{
-                todoDate: [
-                    ...todoDate.slice(0, idx),
-                    newItem,
-                    ...todoDate.slice(idx + 1)
-                ]
-            }
-        });
-    };
+
     // const addItem = (e, label, important=false, done=false) =>{
     //     e.preventDefault();
     //     const newItem = {
@@ -69,15 +57,31 @@ const App = () => {
     //     })
     // };
     const removeItem = (id) =>{
-        this.setState(({todoDate})=>{
-            const idx = todoDate.findIndex(el => el.id === id);
-            return{
-                todoDate: [
-                    ...todoDate.slice(0, idx),
-                    ...todoDate.slice(idx + 1)
-                ]
-            }
-        })
+        // this.setState(({todoDate})=>{
+        //     const idx = todoDate.findIndex(el => el.id === id);
+        //     return{
+        //         todoDate: [
+        //             ...todoDate.slice(0, idx),
+        //             ...todoDate.slice(idx + 1)
+        //         ]
+        //     }
+        // })
+
+    };
+    const propertyToggle = (id, prop) =>{
+        changeProperty(id, prop)
+        // this.setState(({todoDate})=>{
+        //     const idx = todoDate.findIndex(el => el.id === id);
+        //     const oldItem = todoDate[idx];
+        //     const newItem = {...oldItem, [prop]: !oldItem[prop]};
+        //     return{
+        //         todoDate: [
+        //             ...todoDate.slice(0, idx),
+        //             newItem,
+        //             ...todoDate.slice(idx + 1)
+        //         ]
+        //     }
+        // });
     };
     const doneToggle = (id)=>{
         propertyToggle(id, 'done')
@@ -97,46 +101,46 @@ const App = () => {
                 return arr;
         }
     };
-    const changeFilterButton = (label) =>{
-        // const {filterButtons} = this.state;
-        const idx = filterButtons.findIndex(el=> el.label === label);
-        const oldItem = filterButtons[idx];
-        this.setState(({filterButtons, filterButton})=>{
-            const newItem = {...oldItem, active: !filterButtons.active};
-            return {
-                filterButtons: [
-                    ...filterButtons.slice(0, idx),
-                    newItem,
-                    ...filterButtons.slice(idx + 1),
-                ],
-                filterButton: label
-            }
-        })
-    };
-  const doneCount = todoDate.filter(el =>{
-      return(el.done)
-  }).length;
-  const toDoCount = todoDate.length - doneCount;
+    // const changeFilterButton = (label) =>{
+    //     // const {filterButtons} = this.state;
+    //     const idx = filterButtons.findIndex(el=> el.label === label);
+    //     const oldItem = filterButtons[idx];
+    //     this.setState(({filterButtons, filterButton})=>{
+    //         const newItem = {...oldItem, active: !filterButtons.active};
+    //         return {
+    //             filterButtons: [
+    //                 ...filterButtons.slice(0, idx),
+    //                 newItem,
+    //                 ...filterButtons.slice(idx + 1),
+    //             ],
+    //             filterButton: label
+    //         }
+    //     })
+    // };
+  // const doneCount = todoDate.filter(el =>{
+  //     return (el.done)
+  // }).length;
+  // const toDoCount = todoDate.length - doneCount;
   const visibleItems = filterToggle(quickSearchVisible(todoDate, quickSearchText.trim()), filterButton);
     return (
         <div className='container'>
             <div className="App">
                 {/*<Header*/}
-                {/*    doneCount={doneCount}*/}
-                {/*    toDoCount={toDoCount}*/}
+                {/*    // doneCount={doneCount}*/}
+                {/*    // toDoCount={toDoCount}*/}
                 {/*/>*/}
-                <Filter
-                    quickSearchText={quickSearchText}
-                    quickSearch={QuickSearch}
-                    filterButtons={filterButtons}
-                    changeFilterButton={changeFilterButton}
-                    filterButton={filterButton}
-                />
+                {/*<Filter*/}
+                {/*    quickSearchText={quickSearchText}*/}
+                {/*    quickSearch={QuickSearch}*/}
+                {/*    filterButtons={filterButtons}*/}
+                {/*    // changeFilterButton={changeFilterButton}*/}
+                {/*    filterButton={filterButton}*/}
+                {/*/>*/}
                 <TodoList
                     todoDate = {visibleItems}
                     doneToggle={doneToggle}
                     importantToggle={importantToggle}
-                    removeItem = {removeItem}
+                    removeItem = {removedNote}
                 />
                 <AddItem/>
             </div>

@@ -1,7 +1,14 @@
 import React, {useReducer}  from "react";
 import {FirebaseContext} from "./firebaseContext";
 import axios from 'axios'
-import {ADD_NOTE, FETCH_NOTE, firebaseReducer, REMOVE_NOTE, SHOW_LOADER} from "./firebaseReducer";
+import {
+    ADD_NOTE,
+    FETCH_NOTE,
+    firebaseReducer,
+    PROPERTY_NOTE,
+    REMOVE_NOTE,
+    SHOW_LOADER
+} from "./firebaseReducer";
 
 const databaseUrl = 'https://todobase-79e36.firebaseio.com/';
 
@@ -27,6 +34,9 @@ export const FirebaseState = ({children})=>{
     const fetchNotes = async () =>{
         // showLoader();
         const res = await axios.get(`${databaseUrl}/todoDate.json`);
+        if(!res.data){
+            return
+        }
         const payload = Object.keys(res.data).map(key=>{
             return{
                 ...res.data[key],
@@ -34,6 +44,21 @@ export const FirebaseState = ({children})=>{
             }
         });
         dispatch({type: FETCH_NOTE, payload});
+    };
+    const changeProperty = async (id, prop)=>{
+        const idx = state.todoDate.findIndex(el => el.key === id);
+        const oldItem = state.todoDate[idx];
+        const newItem = {...oldItem, [prop]: !oldItem[prop]};
+        const resp = await axios.put(`${databaseUrl}/todoDate/${id}.json`, newItem);
+        console.log(resp);
+        const payload = {
+            todoDate: [
+                ...state.todoDate.slice(0, idx),
+                newItem,
+                ...state.todoDate.slice(idx + 1)
+            ]
+        };
+        dispatch({type: PROPERTY_NOTE, payload});
     };
     const removedNote = async (id)=>{
         const res = await axios.delete(`${databaseUrl}/todoDate/${id}.json`);
@@ -50,7 +75,8 @@ export const FirebaseState = ({children})=>{
                 addNote,
                 showLoader,
                 loading: state.loading,
-                todoDate: state.todoDate
+                todoDate: state.todoDate,
+                changeProperty
             }}
         >
             {children}

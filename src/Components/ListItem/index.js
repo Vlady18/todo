@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import classes from './ListItem.module.css'
 
 const ListItem = ({label, important, done, doneToggle, importantToggle, removeItem}) => {
@@ -8,7 +8,8 @@ const ListItem = ({label, important, done, doneToggle, importantToggle, removeIt
             >
                 <span
                     onClick={doneToggle}
-                    className={done ? `${classes.done}` : '' || important ? `${classes.important}` : ''}>
+                    className={done ? `${classes.done}` : '' || important ? `${classes.important}` : ''}
+                    >
                     {label}
                 </span>
                 <div className='btn-group'>
