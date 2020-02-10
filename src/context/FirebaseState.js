@@ -4,7 +4,7 @@ import axios from 'axios'
 import {
     ADD_NOTE,
     FETCH_NOTE,
-    firebaseReducer,
+    firebaseReducer, HIDE_LOADER,
     PROPERTY_NOTE,
     REMOVE_NOTE,
     SHOW_LOADER
@@ -22,7 +22,7 @@ export const FirebaseState = ({children})=>{
         dispatch({type: SHOW_LOADER})
     };
     const addNote = async (title)=>{
-        // showLoader();
+        showLoader();
         try{
             const note = {
                 label: title,
@@ -38,19 +38,22 @@ export const FirebaseState = ({children})=>{
     }
     const fetchNotes = async () =>{
         showLoader();
-        const res = await axios.get(`${databaseUrl}/todoDate.json`);
-        // if(!res.data){
-        //     return
-        // }
-        const payload = Object.keys(res.data).map(key=>{
-            return{
-                ...res.data[key],
-                key
-            }
-        });
-        dispatch({type: FETCH_NOTE, payload});
+        try {
+            const res = await axios.get(`${databaseUrl}/todoDate.json`);
+            const payload = Object.keys(res.data).map(key=>{
+                return{
+                    ...res.data[key],
+                    key
+                }
+            });
+            dispatch({type: FETCH_NOTE, payload});
+        } catch (e) {
+            dispatch({type: HIDE_LOADER});
+            throw new Error(e.message)
+        }
     };
     const changeProperty = async (id, prop)=>{
+        showLoader();
         const idx = state.todoDate.findIndex(el => el.key === id);
         const oldItem = state.todoDate[idx];
         const newItem = {...oldItem, [prop]: !oldItem[prop]};
@@ -68,11 +71,16 @@ export const FirebaseState = ({children})=>{
         });
     };
     const removedNote = async (id)=>{
-        const res = await axios.delete(`${databaseUrl}/todoDate/${id}.json`);
-        dispatch({
-            type: REMOVE_NOTE,
-            payload: id
-        })
+        showLoader();
+        try{
+            await axios.delete(`${databaseUrl}/todoDate/${id}.json`);
+            dispatch({
+                type: REMOVE_NOTE,
+                payload: id
+            })
+        } catch{
+            dispatch({type: HIDE_LOADER})
+        }
     };
     return(
         <FirebaseContext.Provider

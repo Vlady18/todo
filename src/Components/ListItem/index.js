@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 import classes from './ListItem.module.css'
 
 const ListItem = ({label, important, done, doneToggle, importantToggle, removeItem}) => {

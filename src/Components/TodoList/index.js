@@ -1,26 +1,31 @@
-import React, {useContext, useEffect} from 'react'
+import React from 'react'
 import classes from './TodoList.module.css'
 import ListItem from "../ListItem";
-import {FirebaseContext} from "../../context/firebaseContext";
+import {TransitionGroup, CSSTransition} from 'react-transition-group'
 const TodoList = ({todoDate, doneToggle, importantToggle, removeItem}) =>{
 
     return(
-        <ul className={classes.TodoList + ' list-group'}>
+        <TransitionGroup component="ul" className={classes.TodoList + ' list-group'}>
         {todoDate ? todoDate.map((el)=>{
                 return(
-                    <ListItem
+                    <CSSTransition
                         key={el.key}
-                        label={el.label}
-                        important={el.important}
-                        done={el.done}
-                        // doneToggle={() => doneToggle(el.key)}
-                        importantToggle={()=> importantToggle(el.key)}
-                        removeItem={() => removeItem(el.key)}
-                    />
+                        classNames='noteTransition'
+                        timeout={800}
+                    >
+                        <ListItem
+                            label={el.label}
+                            important={el.important}
+                            done={el.done}
+                            // doneToggle={() => doneToggle(el.key)}
+                            importantToggle={()=> importantToggle(el.key)}
+                            removeItem={() => removeItem(el.key)}
+                        />
+                    </CSSTransition>
                 )
             })
             : null}
-        </ul>
+        </TransitionGroup>
     )
 }
 export default TodoList

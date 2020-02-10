@@ -10,109 +10,27 @@ import Loader from "../Loader";
 const App = () => {
     const { todoDate, fetchNotes, removedNote, changeProperty, loading } = useContext(FirebaseContext);
     useEffect(()=>{
-        fetchNotes();
+        fetchNotes().then(()=>{
+        }).catch((e)=>{
+            alert('Нет доступных записей');
+        })
         // eslint-disable-next-line
     }, []);
-    const [filterButton, usefilterButton] = useState('All');
     const [quickSearchText, useQuickSearchText] = useState('');
-    // maxId = 100;
-    // state={
-    //     todoDate: [
-    //         {label: 'Drink Coffe', important: false, done: true, id: 1},
-    //         {label: 'Make Awesome App', important: false, done: false, id: 2},
-    //         {label: 'Learn React', important: true, done: false, id: 3},
-    //     ],
-    //     filterButtons: [
-    //         {label: 'All'},
-    //         {label: 'Done'},
-    //         {label: 'Active'}
-    //     ],
-    //     quickSearchText: '',
-    //     filterButton: 'All'
-    // };
-    // const addItem = (e, label, important=false, done=false) =>{
-    //     e.preventDefault();
-    //     const newItem = {
-    //         label, important, done
-    //     };
-    //     this.setState(({todoDate})=>{
-    //         return{
-    //             todoDate: [...todoDate, newItem]
-    //         }
-    //     })
-    // };
-    const removeItem = (id) =>{
-        // this.setState(({todoDate})=>{
-        //     const idx = todoDate.findIndex(el => el.id === id);
-        //     return{
-        //         todoDate: [
-        //             ...todoDate.slice(0, idx),
-        //             ...todoDate.slice(idx + 1)
-        //         ]
-        //     }
-        // })
 
-    };
-    // const filterToggle = (arr, filterBy) =>{
-    //     switch (filterBy) {
-    //         case 'All':
-    //             return arr;
-    //         case 'Active':
-    //             return arr.filter((el)=> !el.done);
-    //         case 'Done':
-    //             return arr.filter((el)=> el.done);
-    //         default:
-    //             return arr;
-    //     }
-    // };
-    // const changeFilterButton = (label) =>{
-    //     // const {filterButtons} = this.state;
-    //     const idx = filterButtons.findIndex(el=> el.label === label);
-    //     const oldItem = filterButtons[idx];
-    //     this.setState(({filterButtons, filterButton})=>{
-    //         const newItem = {...oldItem, active: !filterButtons.active};
-    //         return {
-    //             filterButtons: [
-    //                 ...filterButtons.slice(0, idx),
-    //                 newItem,
-    //                 ...filterButtons.slice(idx + 1),
-    //             ],
-    //             filterButton: label
-    //         }
-    //     })
-    // };
-    // const doneCount = todoDate.filter(el =>{
-    //     return (el.done)
-    // }).length;
-    // const toDoCount = todoDate.length - doneCount;
 
     const QuickSearch = (e) =>{
         useQuickSearchText(e.target.value);
     };
     const quickSearchVisible = (arr, quickSearchText)=>{
-        // debugger
         const newArr = arr.filter((el)=> el.label.toLowerCase().indexOf(quickSearchText.toLowerCase()) !== -1);
         if(quickSearchText === ''){
             return arr
         }
         return newArr
     };
-
-
     const propertyToggle = (id, prop) =>{
         changeProperty(id, prop)
-        // this.setState(({todoDate})=>{
-        //     const idx = todoDate.findIndex(el => el.id === id);
-        //     const oldItem = todoDate[idx];
-        //     const newItem = {...oldItem, [prop]: !oldItem[prop]};
-        //     return{
-        //         todoDate: [
-        //             ...todoDate.slice(0, idx),
-        //             newItem,
-        //             ...todoDate.slice(idx + 1)
-        //         ]
-        //     }
-        // });
     };
     // const doneToggle = (id)=>{
     //     propertyToggle(id, 'done')
@@ -124,26 +42,21 @@ const App = () => {
     return (
         <div className='container'>
             <div className="App">
-                <Header
-                />
+                <Header/>
                 <Filter
                     quickSearchText={quickSearchText}
                     quickSearch={QuickSearch}
-                    // filterButtons={filterButtons}
-                    // changeFilterButton={changeFilterButton}
-                    // filterButton={filterButton}
                 />
                 {
                     loading
                     ? <Loader />
-                    : <TodoList
-                            todoDate = {visibleItems}
-                            // doneToggle={doneToggle}
-                            importantToggle={importantToggle}
-                            removeItem = {removedNote}
-                        />
+                    : null
                 }
-
+                <TodoList
+                    todoDate = {visibleItems}
+                    importantToggle={importantToggle}
+                    removeItem = {removedNote}
+                />
                 <AddItem/>
             </div>
         </div>

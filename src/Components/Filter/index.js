@@ -9,7 +9,7 @@ const Filter = ({quickSearch, quickSearchText, filterButtons, changeFilterButton
                        value={quickSearchText}
                        className="form-control"
                        onChange={(e) => quickSearch(e)}
-                       placeholder="Type to search"/>
+                       placeholder="Start typing"/>
             </div>
         </div>
     )
