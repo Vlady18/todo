@@ -13,7 +13,7 @@ const TodoList = ({todoDate, doneToggle, importantToggle, removeItem}) =>{
                         label={el.label}
                         important={el.important}
                         done={el.done}
-                        doneToggle={() => doneToggle(el.key)}
+                        // doneToggle={() => doneToggle(el.key)}
                         importantToggle={()=> importantToggle(el.key)}
                         removeItem={() => removeItem(el.key)}
                     />

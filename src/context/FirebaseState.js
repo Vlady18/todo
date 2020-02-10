@@ -22,21 +22,26 @@ export const FirebaseState = ({children})=>{
         dispatch({type: SHOW_LOADER})
     };
     const addNote = async (title)=>{
-        const note = {
-            label: title,
-            important: false,
-            done: false
-        };
-        const res = await axios.post(`${databaseUrl}/todoDate.json`, note);
-        dispatch({type: ADD_NOTE, payload: note});
-        console.log('addote',  res.data)
+        // showLoader();
+        try{
+            const note = {
+                label: title,
+                important: false,
+                done: false
+            };
+            // throw new Error('123');
+            const res = await axios.post(`${databaseUrl}/todoDate.json`, note);
+            dispatch({type: ADD_NOTE, payload: note});
+        } catch(e){
+            throw new Error(e.message);
+        }
     }
     const fetchNotes = async () =>{
-        // showLoader();
+        showLoader();
         const res = await axios.get(`${databaseUrl}/todoDate.json`);
-        if(!res.data){
-            return
-        }
+        // if(!res.data){
+        //     return
+        // }
         const payload = Object.keys(res.data).map(key=>{
             return{
                 ...res.data[key],
@@ -49,16 +54,18 @@ export const FirebaseState = ({children})=>{
         const idx = state.todoDate.findIndex(el => el.key === id);
         const oldItem = state.todoDate[idx];
         const newItem = {...oldItem, [prop]: !oldItem[prop]};
-        const resp = await axios.put(`${databaseUrl}/todoDate/${id}.json`, newItem);
-        console.log(resp);
-        const payload = {
-            todoDate: [
-                ...state.todoDate.slice(0, idx),
-                newItem,
-                ...state.todoDate.slice(idx + 1)
-            ]
-        };
-        dispatch({type: PROPERTY_NOTE, payload});
+        const resp = await axios.put(`${databaseUrl}/todoDate/${id}.json`, newItem).then((res)=>{
+            // debugger
+            const payload = {
+                todoDate: [
+                    ...state.todoDate.slice(0, idx),
+                    res.data,
+                    ...state.todoDate.slice(idx + 1)
+                ]
+            };
+            dispatch({type: PROPERTY_NOTE, payload: payload.todoDate});
+
+        });
     };
     const removedNote = async (id)=>{
         const res = await axios.delete(`${databaseUrl}/todoDate/${id}.json`);

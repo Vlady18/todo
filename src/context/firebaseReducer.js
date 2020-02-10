@@ -7,11 +7,13 @@ export const PROPERTY_NOTE = 'PROPERTY_NOTE';
 const handlers = {
     [ADD_NOTE]: (state, {payload}) =>({
         ...state,
-        todoDate: [...state.todoDate, payload]
+        todoDate: [...state.todoDate, payload],
+        loading: false
     }),
     [FETCH_NOTE]: (state, {payload})=>({
         ...state,
-        todoDate: payload
+        todoDate: payload,
+        loading: false
     }),
     [REMOVE_NOTE]: (state, {payload}) =>({
         ...state,
@@ -22,9 +24,9 @@ const handlers = {
         todoDate: payload
     }),
         // todoDate: state.todoDate.filter(el=> el.key === payload)
-    [SHOW_LOADER]: ({state}) =>({
+    [SHOW_LOADER]: (state) =>({
         ...state,
-        loader: true
+        loading: true
     }),
     DEFAULT: state => state
 };

@@ -11,8 +11,11 @@ const AddItem = ({addItem}) =>{
     const addItemSet = (e) =>{
         e.preventDefault();
         if(count !== '' && count.trim() !== ''){
-            firebase.addNote(count);
+            firebase.addNote(count).then(()=>{
             // addItem(e, count);
+            }).catch((e)=>{
+                alert('Что-то пошло не так!');
+            });
             setCount('');
         }
     };
