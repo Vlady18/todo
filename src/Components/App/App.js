@@ -8,12 +8,12 @@ import {FirebaseContext} from "../../context/firebaseContext";
 import Loader from "../Loader";
 
 const App = () => {
-    const { todoDate, fetchNotes, removedNote, changeProperty, loading } = useContext(FirebaseContext);
+    const { todoDate, fetchNotes, removedNote, changeProperty, loading, lengthNotes, doneLength } = useContext(FirebaseContext);
     useEffect(()=>{
         fetchNotes().then(()=>{
         }).catch((e)=>{
             alert('Нет доступных записей');
-        })
+        });
         // eslint-disable-next-line
     }, []);
     const [quickSearchText, useQuickSearchText] = useState('');
@@ -32,17 +32,24 @@ const App = () => {
     const propertyToggle = (id, prop) =>{
         changeProperty(id, prop)
     };
-    // const doneToggle = (id)=>{
-    //     propertyToggle(id, 'done')
-    // };
+    const doneToggle = (id)=>{
+        propertyToggle(id, 'done')
+    };
     const importantToggle = (id) =>{
         propertyToggle(id, 'important')
     };
     const visibleItems = quickSearchVisible(todoDate, quickSearchText.trim());
+    const doneCount = todoDate.filter(el =>{
+        return(el.done)
+    }).length;
+    const toDoCount = todoDate.length - doneCount;
     return (
         <div className='container'>
             <div className="App">
-                <Header/>
+                <Header
+                    toDoCount={toDoCount}
+                    toDoneCount={doneCount}
+                />
                 <Filter
                     quickSearchText={quickSearchText}
                     quickSearch={QuickSearch}
@@ -56,6 +63,7 @@ const App = () => {
                     todoDate = {visibleItems}
                     importantToggle={importantToggle}
                     removeItem = {removedNote}
+                    doneToggle={doneToggle}
                 />
                 <AddItem/>
             </div>

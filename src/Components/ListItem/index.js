@@ -7,8 +7,8 @@ const ListItem = ({label, important, done, doneToggle, importantToggle, removeIt
                 className={`list-group-item ${classes.ListItem}`}
             >
                 <span
-                    // onClick={doneToggle}
-                    className={ important ? `${classes.important}` : ''}
+                    onClick={doneToggle}
+                    className={ done ? `${classes.done}` : '' || important ? `${classes.important}` : ''}
                     >
                     {label}
                 </span>

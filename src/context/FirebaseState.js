@@ -2,7 +2,7 @@ import React, {useReducer}  from "react";
 import {FirebaseContext} from "./firebaseContext";
 import axios from 'axios'
 import {
-    ADD_NOTE,
+    ADD_NOTE, DONE_LENGTH,
     FETCH_NOTE,
     firebaseReducer, HIDE_LOADER,
     PROPERTY_NOTE,
@@ -15,7 +15,7 @@ const databaseUrl = 'https://todobase-79e36.firebaseio.com/';
 export const FirebaseState = ({children})=>{
     const initialState = {
         todoDate: [],
-        loading: false
+        loading: false,
     };
     const [state, dispatch] = useReducer(firebaseReducer, initialState);
     const showLoader = ()=>{
@@ -36,11 +36,29 @@ export const FirebaseState = ({children})=>{
             throw new Error(e.message);
         }
     }
+    const lengthNotes = async () =>{
+        try {
+            const res = await axios.get(`${databaseUrl}/todoDate.json`)
+                const arrPayload = Object.keys(res.data).map(key=>{
+                    return{
+                        ...res.data[key],
+                        key
+                    }
+                }).filter(el=>el.done === true).length;
+                dispatch({type: DONE_LENGTH, payload: arrPayload})
+
+        } catch (e) {
+            // dispatch({type: HIDE_LOADER});
+            throw new Error(e.message)
+        }
+    }
     const fetchNotes = async () =>{
         showLoader();
         try {
             const res = await axios.get(`${databaseUrl}/todoDate.json`);
-            const payload = Object.keys(res.data).map(key=>{
+            const arrPayload = Object.keys(res.data);
+            // debugger
+            const payload = arrPayload.map(key=>{
                 return{
                     ...res.data[key],
                     key
@@ -89,6 +107,7 @@ export const FirebaseState = ({children})=>{
                 fetchNotes,
                 addNote,
                 showLoader,
+                lengthNotes,
                 loading: state.loading,
                 todoDate: state.todoDate,
                 changeProperty

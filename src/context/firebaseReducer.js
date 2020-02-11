@@ -1,5 +1,6 @@
 export const ADD_NOTE = 'ADD_NOTE';
 export const FETCH_NOTE = 'FETCH_NOTE';
+export const DONE_LENGTH = 'DONE_LENGTH';
 export const SHOW_LOADER = 'SHOW_LOADER';
 export const HIDE_LOADER = 'HIDE_LOADER';
 export const REMOVE_NOTE = 'REMOVE_NOTE';
@@ -16,6 +17,10 @@ const handlers = {
         todoDate: payload,
         loading: false
     }),
+    [DONE_LENGTH]: (state, {payload})=>({
+        ...state,
+        doneLength: payload
+    }),
     [REMOVE_NOTE]: (state, {payload}) =>({
         ...state,
         todoDate: state.todoDate.filter(el=> el.key !== payload),
@@ -26,6 +31,7 @@ const handlers = {
         todoDate: payload,
         loading: false
     }),
+
         // todoDate: state.todoDate.filter(el=> el.key === payload)
     [SHOW_LOADER]: (state) =>({
         ...state,
