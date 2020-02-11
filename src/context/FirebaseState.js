@@ -36,22 +36,7 @@ export const FirebaseState = ({children})=>{
             throw new Error(e.message);
         }
     }
-    const lengthNotes = async () =>{
-        try {
-            const res = await axios.get(`${databaseUrl}/todoDate.json`)
-                const arrPayload = Object.keys(res.data).map(key=>{
-                    return{
-                        ...res.data[key],
-                        key
-                    }
-                }).filter(el=>el.done === true).length;
-                dispatch({type: DONE_LENGTH, payload: arrPayload})
 
-        } catch (e) {
-            // dispatch({type: HIDE_LOADER});
-            throw new Error(e.message)
-        }
-    }
     const fetchNotes = async () =>{
         showLoader();
         try {
@@ -89,6 +74,7 @@ export const FirebaseState = ({children})=>{
         });
     };
     const removedNote = async (id)=>{
+        // debugger
         showLoader();
         try{
             await axios.delete(`${databaseUrl}/todoDate/${id}.json`);
@@ -107,7 +93,6 @@ export const FirebaseState = ({children})=>{
                 fetchNotes,
                 addNote,
                 showLoader,
-                lengthNotes,
                 loading: state.loading,
                 todoDate: state.todoDate,
                 changeProperty

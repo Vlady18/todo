@@ -8,7 +8,7 @@ import {FirebaseContext} from "../../context/firebaseContext";
 import Loader from "../Loader";
 
 const App = () => {
-    const { todoDate, fetchNotes, removedNote, changeProperty, loading, lengthNotes, doneLength } = useContext(FirebaseContext);
+    const { todoDate, fetchNotes, removedNote, changeProperty, loading } = useContext(FirebaseContext);
     useEffect(()=>{
         fetchNotes().then(()=>{
         }).catch((e)=>{
