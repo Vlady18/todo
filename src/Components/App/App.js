@@ -30,13 +30,14 @@ const App = () => {
         return newArr
     };
     const propertyToggle = (id, prop) =>{
-        changeProperty(id, prop)
+        changeProperty(id, prop);
     };
     const doneToggle = (id)=>{
-        propertyToggle(id, 'done')
+        propertyToggle(id, 'done');
     };
     const importantToggle = (id) =>{
-        propertyToggle(id, 'important')
+        // debugger
+        propertyToggle(id, 'important');
     };
     const visibleItems = quickSearchVisible(todoDate, quickSearchText.trim());
     const doneCount = todoDate.filter(el =>{
@@ -65,7 +66,9 @@ const App = () => {
                     removeItem = {removedNote}
                     doneToggle={doneToggle}
                 />
-                <AddItem/>
+                <AddItem
+                    fetchNotes={fetchNotes}
+                />
             </div>
         </div>
     );

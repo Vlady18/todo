@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react'
 import classes from './AddItem.module.css'
 import {FirebaseContext} from "../../context/firebaseContext";
 
-const AddItem = ({addItem}) =>{
+const AddItem = ({fetchNotes}) =>{
     const firebase = useContext(FirebaseContext);
     const [count, setCount] = useState('');
     const changeInput = (e) =>{
@@ -12,6 +12,7 @@ const AddItem = ({addItem}) =>{
         e.preventDefault();
         if(count !== '' && count.trim() !== ''){
             firebase.addNote(count).then(()=>{
+                // fetchNotes()
             // addItem(e, count);
             }).catch((e)=>{
                 alert('Что-то пошло не так!');

@@ -4,7 +4,7 @@ import './TodoList.css'
 import ListItem from "../ListItem";
 import {TransitionGroup, CSSTransition} from 'react-transition-group'
 const TodoList = ({todoDate, doneToggle, importantToggle, removeItem}) =>{
-
+    // debugger
     return(
         <TransitionGroup component="ul" className={classes.TodoList + ' list-group'}>
         {todoDate ? todoDate.map((el)=>{

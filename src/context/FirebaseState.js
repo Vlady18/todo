@@ -30,8 +30,11 @@ export const FirebaseState = ({children})=>{
                 done: false
             };
             // throw new Error('123');
-            const res = await axios.post(`${databaseUrl}/todoDate.json`, note);
-            dispatch({type: ADD_NOTE, payload: note});
+            const res = await axios.post(`${databaseUrl}/todoDate.json`, note).then((res)=>{
+                note.key = res.data.name;
+                dispatch({type: ADD_NOTE, payload: note});
+            });
+
         } catch(e){
             throw new Error(e.message);
         }
@@ -59,6 +62,7 @@ export const FirebaseState = ({children})=>{
         showLoader();
         const idx = state.todoDate.findIndex(el => el.key === id);
         const oldItem = state.todoDate[idx];
+        // debugger
         const newItem = {...oldItem, [prop]: !oldItem[prop]};
         const resp = await axios.put(`${databaseUrl}/todoDate/${id}.json`, newItem).then((res)=>{
             // debugger
